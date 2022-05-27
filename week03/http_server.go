@@ -62,7 +62,7 @@ func main() {
 	})
 
 	g.Go(func() error {
-		quit := make(chan os.Signal, 0)
+		quit := make(chan os.Signal)
 		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 		select {
@@ -72,10 +72,10 @@ func main() {
 			return errors.Errorf("get os signal: %v", sig)
 		}
 	})
-
+	log.Println("server start...")
 	err := g.Wait()
 	if err != nil {
 		log.Fatal("http server exit...:", err)
 	}
-	log.Println("server start...")
+
 }
