@@ -33,13 +33,16 @@ func setupSetting(config string) {
 	}
 	err = sett.ReadSection("Server", &global.ServerSetting)
 	if err != nil {
-		log.Logger.Panic("setting read kafka section error", zap.Error(err))
+		log.Logger.Panic("setting read server section error", zap.Error(err))
 	}
 	err = sett.ReadSection("MySQL", &global.MySQLSetting)
 	if err != nil {
-		log.Logger.Panic("setting read bulk http section error", zap.Error(err))
+		log.Logger.Panic("setting read mysql section error", zap.Error(err))
 	}
 	err = sett.ReadSection("JWT", &global.JWTSetting)
+	if err != nil {
+		log.Logger.Panic("setting read jwt section error", zap.Error(err))
+	}
 
 }
 
@@ -49,6 +52,7 @@ func setupAny(config string) {
 	setupSetting(config)
 	//初始化Log配置
 	log.SetupLog(SERVICE_NAME, APP_NAME)
+	//初始化mysql
 	mysql.SetupModel()
 
 }
