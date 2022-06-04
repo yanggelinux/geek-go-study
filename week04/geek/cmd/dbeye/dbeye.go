@@ -9,10 +9,13 @@ import (
 	"geek/internal/dbeye/stroe/mysql"
 	"geek/pkg/log"
 	"geek/setting"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"golang.org/x/sync/errgroup"
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -21,27 +24,32 @@ const SERVICE_NAME = "dbeye"
 
 func setupSetting(config string) {
 	if config == "" {
-		log.Logger.Panic("配置文件不能为空")
+		panic("配置文件不能为空")
 	}
 	sett, err := setting.NewSetting(config)
 	if err != nil {
-		log.Logger.Panic("setting set new configs error", zap.Error(err))
+		err = fmt.Errorf("setting set new configs error:%w", err)
+		panic(err)
 	}
 	err = sett.ReadSection("APP", &global.APPSetting)
 	if err != nil {
-		log.Logger.Panic("setting read app section error", zap.Error(err))
+		err = fmt.Errorf("setting read app section error:%w", err)
+		panic(err)
 	}
 	err = sett.ReadSection("Server", &global.ServerSetting)
 	if err != nil {
-		log.Logger.Panic("setting read server section error", zap.Error(err))
+		err = fmt.Errorf("setting read server section error:%w", err)
+		panic(err)
 	}
 	err = sett.ReadSection("MySQL", &global.MySQLSetting)
 	if err != nil {
-		log.Logger.Panic("setting read mysql section error", zap.Error(err))
+		err = fmt.Errorf("setting read mysql section error:%w", err)
+		panic(err)
 	}
 	err = sett.ReadSection("JWT", &global.JWTSetting)
 	if err != nil {
-		log.Logger.Panic("setting read jwt section error", zap.Error(err))
+		err = fmt.Errorf("setting read jwt section error:%w", err)
+		panic(err)
 	}
 
 }
@@ -62,7 +70,7 @@ func main() {
 		config string
 		err    error
 	)
-	flag.StringVar(&config, "configs", "", "请制定配置文件路径")
+	flag.StringVar(&config, "config", "", "请制定配置文件路径")
 	flag.Parse()
 	//初始化配置
 	setupAny(config)
@@ -83,23 +91,39 @@ func main() {
 	log.Logger.Info(runMsg)
 
 	//优雅起停服务
-	go func() {
-		// 将服务在 goroutine 中启动
-		err = s.ListenAndServe()
-		if err != nil {
-			log.Logger.Error("run app error exited", zap.Error(err))
+	g, ctx := errgroup.WithContext(context.Background())
+	g.Go(func() error {
+		err := s.ListenAndServe()
+		return err
+	})
+
+	g.Go(func() error {
+		select {
+		case <-ctx.Done():
+			log.Logger.Info("errgroup exit...")
 		}
-	}()
 
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	<-quit // 阻塞等待接收 channel 数据
-	log.Logger.Info("Shutdown Server ...")
+		timeoutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second) // 5s 缓冲时间处理已有请求
-	defer cancel()
-	if err := s.Shutdown(ctx); err != nil { // 调用 net/http 包提供的优雅关闭函数：Shutdown
-		log.Logger.Error("Server Shutdown:", zap.Error(err))
+		log.Logger.Info("shutting down server...")
+		return s.Shutdown(timeoutCtx)
+	})
+
+	g.Go(func() error {
+		quit := make(chan os.Signal)
+		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case sig := <-quit:
+			return errors.Errorf("get os signal: %v", sig)
+		}
+	})
+	log.Logger.Info("server start...")
+	err = g.Wait()
+	if err != nil {
+		log.Logger.Error("http server exit...:", zap.Error(err))
 	}
-	log.Logger.Info("Server exiting")
 }
