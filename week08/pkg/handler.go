@@ -12,8 +12,8 @@ type RedisHandler struct {
 
 func NewRedisHandler() *RedisHandler {
 	client := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs:    []string{"192.168.20.32:6400", "192.168.20.32:6410", "192.168.20.32:6420"},
-		Password: "8D_af05a01eb94fa35cd563931e3d440@B",
+		Addrs:    []string{"192.168.0.2:6400", "192.168.0.2:6410", "192.168.0.2:6420"},
+		Password: "password",
 	})
 
 	return &RedisHandler{client: client}
