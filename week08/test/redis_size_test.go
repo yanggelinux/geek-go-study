@@ -103,21 +103,20 @@ func BenchmarkRedisOpt5000k(b *testing.B) {
 
 }
 
-//go test redis_size_test.go -bench=.
+//go test redis_size_test.go -bench=. -benchmem
 
 //benchmark结果
 
 //goos: darwin
 //goarch: amd64
-//pkg: geek-go-study/week08
 //cpu: Intel(R) Core(TM) i5-1038NG7 CPU @ 2.00GHz
-//BenchmarkRedisOpt10k-8     	      25	  44164330 ns/op
-//BenchmarkRedisOpt20k-8     	      28	  41788007 ns/op
-//BenchmarkRedisOpt50k-8     	      22	  58430372 ns/op
-//BenchmarkRedisOpt100k-8    	      31	  46838808 ns/op
-//BenchmarkRedisOpt200k-8    	      30	  40477036 ns/op
-//BenchmarkRedisOpt1000k-8   	      27	  39135170 ns/op
-//BenchmarkRedisOpt5000k-8   	      36	  43685868 ns/op
+//BenchmarkRedisOpt10k-8     	      25	  50390763 ns/op	    3093 B/op	      74 allocs/op
+//BenchmarkRedisOpt20k-8     	      30	  45369373 ns/op	    2696 B/op	      65 allocs/op
+//BenchmarkRedisOpt50k-8     	      25	  49682093 ns/op	    3137 B/op	      74 allocs/op
+//BenchmarkRedisOpt100k-8    	      28	  37599046 ns/op	    2573 B/op	      67 allocs/op
+//BenchmarkRedisOpt200k-8    	      22	  51187296 ns/op	    3655 B/op	      81 allocs/op
+//BenchmarkRedisOpt1000k-8   	      27	  38980763 ns/op	    3941 B/op	      70 allocs/op
+//BenchmarkRedisOpt5000k-8   	      32	  52023704 ns/op	    7594 B/op	      61 allocs/op
 //PASS
-//ok  	geek-go-study/week08	17.752s
+//ok  	command-line-arguments	17.583s
 //可以看出val不同字节大小 性能影响不大
