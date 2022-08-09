@@ -9,9 +9,9 @@ Server:
   ReadTimeout: 180
   WriteTimeout: 60
 MySQL:
-  Host: 192.168.10.53
+  Host: 192.168.101.153
   Username: root
-  Password: An@uanD1
+  Password: root
   Port: 3306
   DBName: gateway
 JWT:
