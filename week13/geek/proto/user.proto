@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = "./;proto";
+package proto;
+
+
+service UserService {
+  rpc GetUserList (GetUserListRequest) returns (GetUserListReply) {}
+}
+
+message GetUserListRequest {
+  string userName = 1;
+}
+
+message User {
+  uint32 id = 1;
+  string userName = 2;
+  string fullName = 3;
+  string updatedTime = 4;
+  string createTime = 5;
+}
+
+
+
+message UserData {
+  repeated User resList = 1;
+}
+
+message GetUserListReply {
+  UserData data = 1;
+  string msg = 2;
+  int32 status = 3;
+}

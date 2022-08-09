@@ -5,15 +5,15 @@ APP:
   Development: "true"
 Server:
   RunMode: debug
-  HTTPPort: 1989
+  HTTPPort: 8973
   ReadTimeout: 180
   WriteTimeout: 60
 MySQL:
-  Host: 192.168.10.5
+  Host: 192.168.10.53
   Username: root
-  Password: root
+  Password: An@uanD1
   Port: 3306
-  DBName: dbeye
+  DBName: gateway
 JWT:
   JwtSecret: geek
   JwtExpire: 82800

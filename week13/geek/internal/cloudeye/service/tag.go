@@ -14,7 +14,7 @@ func NewTagServer() *TagServer {
 }
 
 func (t *TagServer) GetTagList(ctx context.Context, r *pb.GetTagListRequest) (*pb.GetTagListReply, error) {
-	_api := api.NewAPI("http://127.0.0.1:8000")
+	_api := api.NewAPI("http://127.0.0.1:1989")
 	body, err := _api.GetTagList(ctx, r.GetName())
 	if err != nil {
 		return nil, err

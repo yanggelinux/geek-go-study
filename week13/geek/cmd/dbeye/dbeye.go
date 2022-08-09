@@ -83,8 +83,8 @@ func main() {
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%d", global.ServerSetting.HTTPPort),
 		Handler:        routerHandler,
-		ReadTimeout:    time.Duration(global.ServerSetting.ReadTimeout),
-		WriteTimeout:   time.Duration(global.ServerSetting.WriteTimeout),
+		ReadTimeout:    time.Duration(global.ServerSetting.ReadTimeout) * time.Second,
+		WriteTimeout:   time.Duration(global.ServerSetting.WriteTimeout) * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	runMsg = fmt.Sprintf("running app success port %d,config is %s", global.ServerSetting.HTTPPort, config)

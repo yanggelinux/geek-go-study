@@ -37,7 +37,10 @@ func (a *API) getAccessToken(ctx context.Context) (string, error) {
 }
 
 func (a *API) httpGet(ctx context.Context, path string) ([]byte, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/%s", a.URL, path))
+	_url := fmt.Sprintf("%s/%s", a.URL, path)
+
+	fmt.Println("***_url***", _url)
+	resp, err := http.Get(_url)
 	if err != nil {
 		return nil, err
 	}

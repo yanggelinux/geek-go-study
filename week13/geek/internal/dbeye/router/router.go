@@ -29,7 +29,7 @@ func Cors() gin.HandlerFunc {
 func NewRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
-	r.Use(gin.Recovery())
+	//r.Use(gin.Recovery())
 	//r.Use(middleware.Recovery())
 	//r.Use(middleware.RequestID())
 	//解决跨域问题
@@ -37,25 +37,16 @@ func NewRouter() *gin.Engine {
 	gin.SetMode(global.ServerSetting.RunMode)
 
 	user := apiV1.NewUser()
-
 	//openapi
-	//syncUser := openapi.NewSyncUser()
-	//doTest := openapi.NewDoTest()
 	//配置路由
-	apiGroup := r.Group("/geek/api")
+	apiGroup := r.Group("/api")
 	//openGroup := r.Group("/geek/openapi")
 	////只对apiv1的组进行token验证
 	//apiGroup.Use(middleware.JWT())
 	//api
 	{
 		apiGroup.GET("/v1/user", user.Get)
-
 	}
-	//openapi
-	//{
-	//	openGroup.GET("/sync-user", syncUser.Get)
-	//	openGroup.GET("/do-test", doTest.Get)
-	//}
 
 	return r
 }
