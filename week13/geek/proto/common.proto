@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+
+//protoc --go_out=plugins=grpc:. ./proto/*.proto
+
+option go_package = "./;proto";
+package proto;
+
+message Pager {
+  int64 page = 1;
+  int64 page_size = 2;
+  int64 total_rows = 3;
+}

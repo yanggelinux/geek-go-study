@@ -1,0 +1,21 @@
+APP:
+  Name: dbeye
+  LogPath: /tmp
+  LogLevel: INFO
+  Development: "true"
+Server:
+  RunMode: debug
+  HTTPPort: 1989
+  ReadTimeout: 180
+  WriteTimeout: 60
+MySQL:
+  Host: 192.168.10.5
+  Username: root
+  Password: root
+  Port: 3306
+  DBName: dbeye
+JWT:
+  JwtSecret: geek
+  JwtExpire: 82800
+  JwtIssuer: geek
+
