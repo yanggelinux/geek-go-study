@@ -2,9 +2,9 @@ package v1
 
 import (
 	"fmt"
+	"geek/internal/dbeye/pkg/app"
+	"geek/internal/dbeye/pkg/ce"
 	"geek/internal/dbeye/service"
-	"geek/internal/pkg/app"
-	"geek/internal/pkg/ce"
 	"geek/pkg/log"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

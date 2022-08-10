@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"geek/internal/dbeye/dao"
 )
 
@@ -21,6 +20,5 @@ type GetUserReq struct {
 func (us *UserService) GetUserInfo(req GetUserReq) (error, int, map[string]interface{}) {
 	userDao := dao.NewUserDao()
 	err, code, data := userDao.GetUserList(req.UserName, req.Page, req.PageSize)
-	fmt.Println(err, code, data)
 	return err, code, data
 }

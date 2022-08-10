@@ -12,7 +12,6 @@ import (
 
 func main() {
 	s := grpc.NewServer()
-	pb.RegisterTagServiceServer(s, service.NewTagServer())
 	pb.RegisterUserServiceServer(s, service.NewUserService())
 
 	reflection.Register(s)

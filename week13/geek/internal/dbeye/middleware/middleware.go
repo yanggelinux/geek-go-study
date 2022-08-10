@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"fmt"
-	"geek/internal/pkg/app"
-	"geek/internal/pkg/ce"
+	app2 "geek/internal/dbeye/pkg/app"
+	"geek/internal/dbeye/pkg/ce"
 	"geek/pkg/log"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -24,7 +24,7 @@ func JWT() gin.HandlerFunc {
 
 		data := make(map[string]interface{})
 		code = ce.SUCCESS
-		appG := app.Gin{c}
+		appG := app2.Gin{c}
 		s, exist := c.GetQuery("token")
 		if exist {
 			token = s
@@ -34,7 +34,7 @@ func JWT() gin.HandlerFunc {
 		if token == "" {
 			code = ce.ERROR_AUTH_TOKEN_FAILED
 		} else {
-			_, err := app.ParseToken(token)
+			_, err := app2.ParseToken(token)
 			if err != nil {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
@@ -58,7 +58,7 @@ func Recovery() gin.HandlerFunc {
 		defer func() {
 			data := make(map[string]interface{})
 			code := ce.ERROR
-			appG := app.Gin{c}
+			appG := app2.Gin{c}
 			if p := recover(); p != nil {
 				//painc时打印出堆栈日志
 				errMsg := fmt.Sprintf("%+v", p)

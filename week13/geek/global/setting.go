@@ -7,4 +7,5 @@ var (
 	MySQLSetting  *setting.MySQLSettingS
 	JWTSetting    *setting.JWTSettingS
 	ServerSetting *setting.ServerSettingS
+	KafkaSetting  *setting.KafkaSettingS
 )

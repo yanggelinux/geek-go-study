@@ -1,0 +1,15 @@
+APP:
+  Name: dbeye
+  LogPath: /tmp
+  LogLevel: INFO
+  Development: "true"
+Kafka:
+  ConsumerBrokers: 192.168.10.15:9092,192.168.10.138:9092,192.168.10.16:9092
+  ConsumerTopic: cloudeye_aggregated_data
+  ConsumerGroupID: sync
+  ConsumerVersion: 1.1.0
+  ConsumerOffset: new #old最早的offset new最新的offset
+
+  ProducerBrokers: 192.168.10.15:9092,192.168.10.138:9092,192.168.10.16:9092
+  ProducerTopic: process
+  ProducerVersion: 1.1.0

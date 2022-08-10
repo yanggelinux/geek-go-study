@@ -28,6 +28,17 @@ type JWTSettingS struct {
 	JwtIssuer string
 }
 
+type KafkaSettingS struct {
+	ConsumerBrokers string
+	ConsumerTopic   string
+	ConsumerGroupID string
+	ConsumerVersion string
+	ConsumerOffset  string
+	ProducerBrokers string
+	ProducerTopic   string
+	ProducerVersion string
+}
+
 func (s *Setting) ReadSection(k string, v interface{}) error {
 	err := s.vp.UnmarshalKey(k, v)
 	if err != nil {

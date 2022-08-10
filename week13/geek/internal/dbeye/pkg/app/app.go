@@ -1,7 +1,7 @@
 package app
 
 import (
-	"geek/internal/pkg/ce"
+	"geek/internal/dbeye/pkg/ce"
 	"github.com/gin-gonic/gin"
 )
 
